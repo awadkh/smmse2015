@@ -37,6 +37,9 @@ public class ProductService {
                     existingProduct.setDescription(productDetails.getDescription());
                     existingProduct.setPrice(productDetails.getPrice());
                     existingProduct.setQuantityOnHand(productDetails.getQuantityOnHand());
+                    // Add updates for new fields
+                    existingProduct.setCategory(productDetails.getCategory());
+                    existingProduct.setLowStockThreshold(productDetails.getLowStockThreshold());
                     return productRepository.save(existingProduct);
                 })
                 .switchIfEmpty(Mono.error(new RuntimeException("Product not found with id: " + id)));
