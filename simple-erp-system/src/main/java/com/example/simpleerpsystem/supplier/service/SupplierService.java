@@ -31,10 +31,13 @@ public class SupplierService {
 
         // Validate uniqueness of email if provided
         Mono<Supplier> checkEmail = Mono.empty(); // Default to no check needed
-        if (supplierInput.getEmail() != null && !supplierInput.getEmail().isEmpty()) {
-            checkEmail = supplierRepository.findByEmail(supplierInput.getEmail())
-                .flatMap(existing -> Mono.error(new RuntimeException("Supplier email already exists: " + supplierInput.getEmail())));
-        }
+		/*
+		 * if (supplierInput.getEmail() != null && !supplierInput.getEmail().isEmpty())
+		 * { checkEmail = supplierRepository.findByEmail(supplierInput.getEmail())
+		 * .flatMap(existing -> Mono.error(new
+		 * RuntimeException("Supplier email already exists: " +
+		 * supplierInput.getEmail()))); }
+		 */
 
         // Chain validations then save
         return checkName.switchIfEmpty(Mono.defer(() -> checkEmail)) // If name is unique, check email. Use defer to ensure checkEmail is subscribed only if checkName is empty.
